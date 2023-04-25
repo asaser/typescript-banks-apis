@@ -19,7 +19,7 @@ export interface SterlingDataType {
     reference: string;
 }
 
-export interface AsaserDataType {
+export interface RevolutDataType {
     id: string,
     created_at: string,
     completed_at: string,
