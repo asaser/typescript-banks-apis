@@ -12,7 +12,7 @@ export const getMonzo: RequestHandler = async (req, res, next) => {
         }
 
         const monzoDataTypes = monzoDataBanks as MonzoDataType[];
-        const monzoDataType = monzoDataTypes[0];         
+        const monzoDataType = monzoDataTypes;         
 
         res.status(200).json(monzoDataType)
     } catch (error) {
