@@ -6,7 +6,7 @@ export interface TransactionDataType {
         value: string;
         currency: string;
     };
-    type: string;
+    type: "DEBIT" | "CREDIT";
     reference: string;
     metadata: {
         source: string;

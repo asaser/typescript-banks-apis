@@ -9,23 +9,6 @@ export interface MonzoDataType {
     };
 }
 
-export interface RevolutDataType {
-    id: string;
-    created_at: string;
-    completed_at: string;
-    state: "COMPLETED" | "PENDING" | "FAILURE";
-    amount: {
-        value: string;
-        currency: string;
-    };
-    merchant: null;
-    counterparty: {
-        id: string;
-        name: string;
-    };
-    reference: string;
-}
-
 export interface SterlingDataType {
     id: string;
     currency: string;
@@ -34,4 +17,21 @@ export interface SterlingDataType {
     narrative: string;
     created: string;
     reference: string;
+}
+
+export interface RevolutDataType {
+    id: string,
+    created_at: string,
+    completed_at: string,
+    state: "COMPLETED",
+    amount: {
+        value: string,
+        currency: string
+    },
+    merchant: null,
+    counterparty: {
+        id: string,
+        name: string
+    },
+    reference: string
 }
