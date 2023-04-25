@@ -4,15 +4,36 @@ import app from '../index'; // assuming the app is exported from app.ts
 import revolutDataBanks from '../data/revolut-tx.json';
 
 describe('revolutController', () => {
-  it('return correct revolut data', async () => {
-    // mock the API response using Nock
-    nock('http://localhost:5000/api/revolut')
-        .get('/revolut')
-        .reply(200, revolutDataBanks);
 
-        const res = await request(app).get('/api/revolut');
+    const baseUrl = 'http://localhost:5000';
+    const revolutBaseUrl = '/api/revolut';
 
-        expect(res.status).toEqual(200);
-        expect(res.body).toEqual(revolutDataBanks);
+    afterEach(() => {
+        nock.cleanAll();
     });
+
+    it('return revolut data correct', async () => {
+        nock(baseUrl)
+            .get(revolutBaseUrl)
+            .reply(200, revolutDataBanks);
+
+        const response = await request(app).get('/api/revolut');
+
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual(revolutDataBanks);
+    });
+
+    // To-Do write fake data to check
+    // it('return revolut data not found', async () => {
+    //     nock(baseUrl)
+    //         .get(revolutBaseUrl)
+    //         .reply(404, { message: 'Revolut data not found' });
+
+    //     const response = await request(app).get('/api/revolut');
+
+    //     expect(response.status).toBe(404);
+    //     expect(response.body).toEqual({ 
+    //         message: 'Revolut data not found' 
+    //     });
+    // })
 });
