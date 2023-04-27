@@ -15,6 +15,7 @@ export const getSterling: RequestHandler = async (req, res, next) => {
         }
 
         const sterlingDataTypes = sterlingDataBanks as SterlingDataType[];
+        
         const sterlingDataType = sterlingDataTypes;         
 
         res.status(200).json(sterlingDataType)
