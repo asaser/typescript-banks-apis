@@ -13,7 +13,7 @@ export interface SterlingDataType {
     id: string;
     currency: string;
     amount: string;
-    direction: "IN" | "OUT";
+    direction: string;
     narrative: string;
     created: string;
     reference: string;
@@ -23,7 +23,7 @@ export interface RevolutDataType {
     id: string,
     created_at: string,
     completed_at: string,
-    state: "COMPLETED",
+    state: string,
     amount: {
         value: string,
         currency: string

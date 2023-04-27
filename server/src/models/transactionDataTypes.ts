@@ -3,10 +3,10 @@ export interface TransactionDataType {
     created: string;
     description: string;
     amount: {
-        value: string;
+        value: string | number;
         currency: string;
     };
-    type: 'DEBIT' | 'CREDIT';
+    type: string;
     reference: string;
     metadata: {
         source: string;
