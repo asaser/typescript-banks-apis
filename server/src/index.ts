@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import monzoRoutes from './routes/monzoRoutes';
 import sterlingRoutes from './routes/sterlingRoutes';
 import revolutRoutes from './routes/revolutRoutes';
@@ -8,6 +9,7 @@ import createHttpError from 'http-errors';
 const app = express();
 const port = 5000;
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/api/monzo", monzoRoutes);
