@@ -10,7 +10,7 @@ const sterlingData: SterlingDataType[] = sterlingDataBanks;
 const monzoData: MonzoDataType[] = monzoDataBanks;
 const revolutData: RevolutDataType[] = revolutDataBanks;
 
-const mapSterlingTransactions: TransactionDataType[] = sterlingData.map((transaction) => {
+export const mapSterlingTransactions: TransactionDataType[] = sterlingData.map((transaction) => {
   return {
     id: transaction.id,
     created: transaction.created,
@@ -27,7 +27,7 @@ const mapSterlingTransactions: TransactionDataType[] = sterlingData.map((transac
   };
 });
 
-const mapMonzoTransactions: TransactionDataType[] = monzoData.map((transaction) => {
+export const mapMonzoTransactions: TransactionDataType[] = monzoData.map((transaction) => {
   return {
     id: transaction.id,
     created: transaction.created,
@@ -44,7 +44,7 @@ const mapMonzoTransactions: TransactionDataType[] = monzoData.map((transaction) 
   };
 });
 
-const mapRevolutTransaction: TransactionDataType[] = revolutData.map((transaction) => {
+export const mapRevolutTransaction: TransactionDataType[] = revolutData.map((transaction) => {
   return {
     id: transaction.id,
     created: transaction.created_at,
@@ -62,7 +62,7 @@ const mapRevolutTransaction: TransactionDataType[] = revolutData.map((transactio
 });
 
 
-export const getTransactions: RequestHandler = (req, res, next) => {
+export const getTransactions: RequestHandler<void> = (req, res, next) => {
 
   try {
     const transactions = [
@@ -73,15 +73,19 @@ export const getTransactions: RequestHandler = (req, res, next) => {
 
     res.json({ transactions });
   } catch (error) {
-    next(error);
+    next(createHttpError(500, 'Transactions server error'))
   }
 };
 
 
-export const getBanksTransactions: RequestHandler = (req, res, next) => {
+export const getBanksTransactions: RequestHandler<void> = (req, res, next) => {
     try {
-      const source = req.query.source;
+      const source = req.query.source as string;
       let transactions: TransactionDataType[] = []; 
+
+      if (!source || !['sterling', 'monzo', 'revolut'].includes(source)) {
+        throw createHttpError(400, 'Ivalid request - url query not found')
+      }
 
       if(source === 'sterling') {
         transactions = mapSterlingTransactions;
@@ -89,50 +93,14 @@ export const getBanksTransactions: RequestHandler = (req, res, next) => {
         transactions = mapMonzoTransactions;
       } else if (source === 'revolut') {
         transactions = mapRevolutTransaction;
-      } else {
-        throw createHttpError(404, "Data not found")
+      }
+
+      if (transactions.length === 0) {
+        throw createHttpError(404, "Data not found");
       }
 
       res.json({ transactions });
     } catch (error) {
-      next(error)
+      next(createHttpError(500, 'Banks transactions server error'))
     }
 };
-
-
-
-  // export function getTransactionsFromBank(bank: any): TransactionDataType[] {
-  //   // Replace this with actual implementation that retrieves transactions from the specified bank
-  //   const mockTransactions: TransactionDataType[] = [
-  //     {
-  //       id: "1",
-  //       created: "2022-03-21T14:16:32.000Z",
-  //       description: "Payment to John Smith",
-  //       amount: {
-  //         value: "-50.00",
-  //         currency: "GBP",
-  //       },
-  //       type: "DEBIT",
-  //       reference: "REF-1234567890",
-  //       metadata: {
-  //         source: bank,
-  //       },
-  //     },
-  //     {
-  //       id: "2",
-  //       created: "2022-03-20T12:30:15.000Z",
-  //       description: "Deposit from Jane Doe",
-  //       amount: {
-  //         value: "100.00",
-  //         currency: "GBP",
-  //       },
-  //       type: "CREDIT",
-  //       reference: "REF-0987654321",
-  //       metadata: {
-  //         source: bank,
-  //       },
-  //     },
-  //   ];
-  
-  //   return mockTransactions;
-  // }

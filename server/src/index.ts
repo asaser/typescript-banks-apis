@@ -1,10 +1,10 @@
-import express from 'express';
+import express, { Request, Response } from "express";
 import cors from 'cors';
 import monzoRoutes from './routes/monzoRoutes';
 import sterlingRoutes from './routes/sterlingRoutes';
 import revolutRoutes from './routes/revolutRoutes';
 import transactionsRoutes from './routes/transactionsRoutes';
-import createHttpError from 'http-errors';
+import createHttpError, { isHttpError } from 'http-errors';
 
 const app = express();
 const port = 5000;
@@ -19,6 +19,17 @@ app.use("/transactions", transactionsRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
+});
+
+app.use((error: unknown, req: Request, res: Response) => {
+    let errorMessage = "An unknow error occured";
+    let statusCode = 500;
+    
+    if(isHttpError(error)) {
+        statusCode = error.status;
+        errorMessage = error.message;
+    }
+    res.status(statusCode).json({ error: errorMessage})
 });
 
 app.listen(port, () => {

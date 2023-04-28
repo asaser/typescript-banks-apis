@@ -6,11 +6,11 @@ import { RevolutDataType } from "../models/bankDataTypes";
 export const getRevolut: RequestHandler = async (req, res, next) => {
   try {
 
-    if(!revolutDataBanks) {
+    if(!revolutDataBanks.length) {
         throw createHttpError(404, "Revolut data not found")
     }
 
-    const revolutDataTypes = revolutDataBanks as RevolutDataType[];
+    const revolutDataTypes = await revolutDataBanks as RevolutDataType[];
     const revolutDataType = revolutDataTypes;         
 
     res.status(200).json(revolutDataType)
