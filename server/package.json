@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1"
   },
   "keywords": [],
   "author": "",
